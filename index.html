@@ -1,0 +1,173 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Xyzen Cek Umur</title>
+      <style>
+          /* Styling background full layar */
+          body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              margin: 0;
+              background-image: url('xyzen.jpg'); /* Ganti dengan nama file gambar */
+              background-size: cover;
+              background-position: center;
+          }
+
+          /* Styling kontainer utama */
+          .container {
+              padding: 20px;
+              text-align: center;
+              color: #fff;
+              background-color: rgba(0, 0, 0, 0.5); /* Transparan untuk efek background */
+              border-radius: 10px; /* Membuat sudut tabel menjadi melengkung */
+          }
+
+          /* Styling judul utama */
+          .title {
+              font-size: 28px;
+              font-weight: bold;
+              margin-bottom: 20px;
+              color: #FFD700;
+          }
+
+          /* Styling tabel agar rapi */
+          table {
+              margin: 0 auto;
+              border-collapse: collapse;
+              color: #fff;
+              width: 100%; /* Memastikan tabel memenuhi lebar kontainer */
+              max-width: 400px; /* Maksimal lebar tabel */
+          }
+
+          table td {
+              padding: 10px;
+              font-size: 16px;
+              text-align: center; /* Memusatkan teks dalam tabel */
+          }
+
+          /* Styling input */
+          input[type="number"], select {
+              padding: 10px;
+              font-size: 16px;
+              border: none;
+              border-radius: 5px;
+              width: 80%; /* Lebar input simetris */
+              text-align: center;
+          }
+
+          /* Styling tombol */
+          button {
+              background-color: #FFD700;
+              color: #333;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 16px;
+              margin-top: 10px;
+          }
+
+          button:hover {
+              background-color: #FFA500;
+          }
+
+          /* Styling hasil */
+          #result {
+              margin-top: 15px;
+              font-size: 18px;
+              font-weight: bold;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <!-- Judul utama -->
+          <div class="title">Xyzen Cek Umur</div>
+
+          <!-- Tabel untuk input tanggal lahir -->
+          <h2>Cek Umur di Tahun Tertentu</h2>
+          <table>
+              <tr>
+                  <td><label for="date">Tanggal:</label></td>
+                  <td><input type="number" id="date" placeholder="DD" min="1" max="31" oninput="limitDateInput(this)"></td>
+              </tr>
+              <tr>
+                  <td><label for="month">Bulan:</label></td>
+                  <td>
+                      <select id="month">
+                          <option value="1">Januari</option>
+                          <option value="2">Februari</option>
+                          <option value="3">Maret</option>
+                          <option value="4">April</option>
+                          <option value="5">Mei</option>
+                          <option value="6">Juni</option>
+                          <option value="7">Juli</option>
+                          <option value="8">Agustus</option>
+                          <option value="9">September</option>
+                          <option value="10">Oktober</option>
+                          <option value="11">November</option>
+                          <option value="12">Desember</option>
+                      </select>
+                  </td>
+              </tr>
+              <tr>
+                  <td><label for="year">Tahun Lahir:</label></td>
+                  <td><input type="number" id="year" placeholder="YYYY" min="1900"></td>
+              </tr>
+          </table>
+
+          <!-- Input untuk tahun target -->
+          <p>Masukkan Tahun yang Ingin Dicek:</p>
+          <input type="number" id="targetYear" placeholder="YYYY" min="1900">
+
+          <button onclick="calculateAge()">Cek Umur</button>
+
+          <p id="result"></p>
+      </div>
+
+      <script>
+          function limitDateInput(input) {
+              if (input.value.length > 2) {
+                  input.value = input.value.slice(0, 2); // Batasi input hanya 2 digit
+              }
+          }
+
+          function calculateAge() {
+              const date = parseInt(document.getElementById("date").value);
+              const month = parseInt(document.getElementById("month").value);
+              const birthYear = parseInt(document.getElementById("year").value);
+              const targetYear = parseInt(document.getElementById("targetYear").value);
+
+              // Validasi input
+              if (isNaN(date) || isNaN(month) || isNaN(birthYear) || isNaN(targetYear)) {
+                  document.getElementById("result").innerText = "Tolong isi semua kolom dengan benar!";
+                  return;
+              }
+
+              if (targetYear < birthYear) {
+                  document.getElementById("result").innerText = "Tahun yang ingin dicek tidak bisa lebih kecil dari tahun lahir!";
+                  return;
+              }
+
+              let age = targetYear - birthYear;
+
+              // Penyesuaian umur berdasarkan bulan dan hari
+              const today = new Date(targetYear, month - 1, date);
+              const birthDate = new Date(birthYear, month - 1, date);
+              if (today < birthDate) {
+                  age -= 1;
+              }
+
+              document.getElementById("result").innerText = `Pada tahun ${targetYear}, umur kamu adalah ${age} tahun.`;
+          }
+      </script>
+  </body>
+  </html>
+
+
+</html>
