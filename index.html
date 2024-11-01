@@ -55,8 +55,9 @@
             margin: 0 auto;
             border-collapse: collapse;
             color: #fff;
-            width: 100%; /* Memastikan tabel memenuhi lebar kontainer */
+            width: 80%; /* Memastikan tabel memenuhi lebar kontainer */
             max-width: 400px; /* Maksimal lebar tabel */
+            margin-bottom: 20px; /* Memberi jarak bawah tabel */
         }
 
         table td {
@@ -101,8 +102,8 @@
     </style>
 </head>
 <body>
-    <div id="loading">Welcome to Xyzen</div>
-    <div class="container">
+    <div id="loading">Welcome to Website Cek Umur</div>
+    <div class="container" id="ageChecker" style="display: none;">
         <!-- Judul utama -->
         <div class="title">Xyzen Cek Umur</div>
         
@@ -193,7 +194,7 @@
         window.onload = function() {
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none'; // Sembunyikan loading
-                document.body.style.display = 'block'; // Tampilkan body
+                document.getElementById('ageChecker').style.display = 'block'; // Tampilkan konten
             }, 3000); // Menampilkan loading selama 3 detik
         };
     </script>
