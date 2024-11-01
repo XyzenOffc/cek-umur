@@ -26,7 +26,7 @@
             font-family: Arial, sans-serif;
             display: none; /* Sembunyikan body sampai loading selesai */
             margin: 0;
-            background-image: url('xyzen.jpg'); /* Pastikan file ini ada di folder yang sama */
+            background-image: url('xyzen.jpg'); /* Ganti dengan nama file gambar */
             background-size: cover;
             background-position: center;
         }
@@ -195,6 +195,7 @@
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none'; // Sembunyikan loading
                 document.getElementById('ageChecker').style.display = 'block'; // Tampilkan konten
+                document.body.style.display = 'block'; // Tampilkan body setelah loading
             }, 3000); // Menampilkan loading selama 3 detik
         };
     </script>
