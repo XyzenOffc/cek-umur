@@ -1,30 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xyzen Cek Umur</title>
+    <title>Xyzen Cek Umur dan Uji Kecocokan</title>
     <style>
         /* Styling background full layar */
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Mengatur arah flex ke kolom */
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
             background-image: url('xyzen.jpg'); /* Ganti dengan nama file gambar */
             background-size: cover;
             background-position: center;
+            color: #fff; /* Warna teks putih */
+        }
+
+        /* Styling untuk hamburger menu */
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 30px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #FFD700; /* Warna garis */
+            transition: all 0.3s;
+        }
+
+        /* Menu dropdown */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .dropdown a {
+            color: #FFD700;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .dropdown a:hover {
+            text-decoration: underline;
         }
 
         /* Styling kontainer utama */
         .container {
             padding: 20px;
             text-align: center;
-            color: #fff;
             background-color: rgba(0, 0, 0, 0.5); /* Transparan untuk efek background */
             border-radius: 10px; /* Membuat sudut tabel menjadi melengkung */
+            margin-bottom: 30px; /* Jarak antar kontainer */
         }
 
         /* Styling judul utama */
@@ -82,9 +123,31 @@
             font-size: 18px;
             font-weight: bold;
         }
+
+        /* Styling hasil kecocokan */
+        .result-compatibility {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.7); /* Membuat latar belakang semi-transparan */
+            display: inline-block;
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
+    <!-- Hamburger Menu -->
+    <div class="menu" onclick="toggleDropdown()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div class="dropdown" id="menuDropdown">
+        <a href="/">Home</a>
+        <a href="/uji-kecocokan">Uji Kecocokan</a>
+        <a href="/cek-umur">Cek Umur</a>
+    </div>
+
     <div class="container">
         <!-- Judul utama -->
         <div class="title">Xyzen Cek Umur</div>
@@ -130,7 +193,22 @@
         <p id="result"></p>
     </div>
 
+    <!-- Uji Kecocokan -->
+    <div class="container">
+        <div class="title">Uji Kecocokan Pasangan</div>
+        <input type="text" id="name1" placeholder="Nama Pertama" required>
+        <input type="text" id="name2" placeholder="Nama Kedua" required>
+        <button onclick="checkCompatibility()">Berapa Kecocokanmu?</button>
+
+        <div class="result-compatibility" id="resultCompatibility"></div>
+    </div>
+
     <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("menuDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; // Toggle dropdown
+        }
+
         function limitDateInput(input) {
             if (input.value.length > 2) {
                 input.value = input.value.slice(0, 2); // Batasi input hanya 2 digit
@@ -170,6 +248,31 @@
             }
 
             document.getElementById("result").innerText = `Pada tahun ${targetYear}, umur kamu adalah ${age} tahun.`;
+        }
+
+        function checkCompatibility() {
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
+
+            if (!name1 || !name2) {
+                document.getElementById('resultCompatibility').innerText = "Tolong isi kedua nama!";
+                return;
+            }
+
+            const compatibility = Math.floor(Math.random() * 100) + 1; // Kecocokan acak 1-100
+            let message;
+
+            if (compatibility >= 80) {
+                message = `Kecocokanmu adalah ${compatibility}%. 🎉 Selamat, pasangan yang sempurna!`;
+            } else if (compatibility >= 60) {
+                message = `Kecocokanmu adalah ${compatibility}%. 😄 Baiklah, cukup cocok!`;
+            } else if (compatibility >= 40) {
+                message = `Kecocokanmu adalah ${compatibility}%. 😬 Hmm, coba lagi!`;
+            } else {
+                message = `Kecocokanmu adalah ${compatibility}%. 😱 Mungkin tidak cocok.`;
+            }
+
+            document.getElementById('resultCompatibility').innerText = message;
         }
     </script>
 </body>
