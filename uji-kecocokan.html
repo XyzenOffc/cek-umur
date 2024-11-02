@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xyzen Uji Kecocokan</title>
+    <style>
+        /* Styling background full layar */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; /* Mengatur arah flex ke kolom */
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('xyzen.jpg'); /* Ganti dengan nama file gambar */
+            background-size: cover;
+            background-position: center;
+            color: #fff; /* Warna teks putih */
+        }
+
+        /* Hamburger Menu */
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 30px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: #FFD700; /* Warna garis */
+            transition: all 0.3s;
+        }
+
+        /* Menu dropdown */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .dropdown a {
+            color: #FFD700;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .dropdown a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling kontainer utama */
+        .container {
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Transparan untuk efek background */
+            border-radius: 10px; /* Membuat sudut tabel menjadi melengkung */
+            width: 400px; /* Lebar kontainer */
+        }
+
+        /* Styling judul utama */
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        /* Styling tabel agar rapi */
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            color: #fff;
+            width: 100%; /* Memastikan tabel memenuhi lebar kontainer */
+            max-width: 400px; /* Maksimal lebar tabel */
+        }
+
+        table td {
+            padding: 10px;
+            font-size: 16px;
+            text-align: center; /* Memusatkan teks dalam tabel */
+        }
+
+        /* Styling input */
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            width: 80%; /* Lebar input simetris */
+            text-align: center;
+        }
+
+        /* Styling tombol */
+        button {
+            background-color: #FFD700;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 95%; /* Lebar tombol simetris */
+        }
+
+        button:hover {
+            background-color: #FFA500;
+        }
+
+        /* Styling hasil */
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu -->
+    <div class="menu" onclick="toggleDropdown()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div class="dropdown" id="menuDropdown">
+        <a href="/">Home</a>
+        <a href="/cek-umur.html">Cek Umur</a>
+    </div>
+
+    <div class="container">
+        <!-- Judul utama -->
+        <div class="title">Xyzen Uji Kecocokan</div>
+
+        <table>
+            <tr>
+                <td><label for="name1">Nama 1:</label></td>
+                <td><input type="text" id="name1" placeholder="Nama Pertama"></td>
+            </tr>
+            <tr>
+                <td><label for="name2">Nama 2:</label></td>
+                <td><input type="text" id="name2" placeholder="Nama Kedua"></td>
+            </tr>
+        </table>
+
+        <button onclick="calculateCompatibility()">Berapa Kecocokanmu?</button>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("menuDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; // Toggle dropdown
+        }
+
+        function calculateCompatibility() {
+            const name1 = document.getElementById("name1").value.trim();
+            const name2 = document.getElementById("name2").value.trim();
+
+            if (name1 === "" || name2 === "") {
+                document.getElementById("result").innerText = "Tolong masukkan kedua nama!";
+                return;
+            }
+
+            // Menghitung kecocokan secara acak antara 1-100
+            const compatibility = Math.floor(Math.random() * 100) + 1;
+
+            // Ucapan berdasarkan kecocokan
+            let message;
+            if (compatibility <= 10) {
+                message = "Oh tidak, sangat rendah... 😢";
+            } else if (compatibility <= 30) {
+                message = "Hmm, mungkin bisa lebih baik... 🤔";
+            } else if (compatibility <= 50) {
+                message = "Cukup lumayan, terus berusaha! 😅";
+            } else if (compatibility <= 70) {
+                message = "Bagus, ada harapan! 😊";
+            } else if (compatibility <= 90) {
+                message = "Sangat cocok! 😍";
+            } else {
+                message = "Kecocokan sempurna! ❤️";
+            }
+
+            document.getElementById("result").innerText = `Kecocokan antara ${name1} dan ${name2} adalah ${compatibility}%! ${message}`;
+        }
+    </script>
+</body>
+</html>
