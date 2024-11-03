@@ -2,14 +2,18 @@ const crypto = require("crypto");
 const fetch = require("node-fetch");
 
 let counter = 0;
-let spamming = false;
+let isSpamming = false; // Variabel untuk mengontrol status spam
 
+// Fungsi untuk mengirim pesan secara berulang
 const sendMessage = async (username, message) => {
-    while (spamming) {
+    isSpamming = true; // Mengatur status spam menjadi aktif
+    counter = 0; // Reset hitungan pesan
+
+    while (isSpamming) {
         try {
             const date = new Date();
-            const minutes = date.getMinutes();
-            const hours = date.getHours();
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const hours = date.getHours().toString().padStart(2, "0");
             const formattedDate = `${hours}:${minutes}`;
 
             const deviceId = crypto.randomBytes(21).toString("hex");
@@ -37,44 +41,43 @@ const sendMessage = async (username, message) => {
             });
 
             if (response.status !== 200) {
-                console.log(`[${formattedDate}] [Err] Ratelimited, waiting 5 seconds...`);
-                await new Promise(resolve => setTimeout(resolve, 5000)); // Tunggu sebelum mencoba lagi
+                console.log(`[${formattedDate}] [Err] Ratelimited, menunggu 5 detik...`);
+                await new Promise(resolve => setTimeout(resolve, 5000));
             } else {
                 counter++;
-                console.log(`[${formattedDate}] [Msg] Sent: ${counter}`);
-                document.getElementById('status').innerText = `Pesan terkirim: ${counter}`;
+                console.log(`[${formattedDate}] [Msg] Pesan terkirim: ${counter}`);
             }
 
-            // Tunggu beberapa detik sebelum mengirim pesan berikutnya
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Tunggu 2 detik
+            // Jeda beberapa detik sebelum mengirim pesan berikutnya
+            await new Promise(resolve => setTimeout(resolve, 2000));
         } catch (error) {
-            console.error(`[${formattedDate}] [Err] ${error}`);
-            await new Promise(resolve => setTimeout(resolve, 2000)); // Tunggu sebelum mencoba lagi
+            console.error(`[${formattedDate}] [Err] Kesalahan: ${error}`);
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Jeda sebelum mencoba lagi
         }
     }
 };
 
-function startSpamming() {
-    const username = document.getElementById('username').value;
-    const message = document.getElementById('message').value;
+// Fungsi untuk menghentikan proses spam
+const stopSpam = () => {
+    isSpamming = false;
+    console.log("Proses spam dihentikan.");
+};
 
-    if (!username || !message) {
-        alert("Tolong masukkan username dan pesan!");
-        return;
-    }
+// Fungsi untuk memulai proses spam dari terminal
+const startSpamFromCLI = () => {
+    const readline = require("readline");
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
 
-    spamming = true;
-    counter = 0;
-    document.getElementById('status').innerText = "Mulai mengirim...";
+    rl.question('Masukkan username: ', (username) => {
+        rl.question('Masukkan pesan: ', (message) => {
+            sendMessage(username, message);
+            rl.close();
+        });
+    });
+};
 
-    sendMessage(username, message);
-}
-
-// Tambahan untuk menghentikan spam jika diperlukan
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'hidden') {
-        spamming = false;
-    } else {
-        spamming = true;
-    }
-});
+// Ekspor fungsi jika ingin diakses dari berkas lain (misalnya HTML)
+module.exports = { sendMessage, stopSpam, startSpamFromCLI };
