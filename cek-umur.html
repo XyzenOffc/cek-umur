@@ -141,80 +141,78 @@
     <div class="container">
         <!-- Judul utama -->
         <div class="title">Xyzen Cek Umur</div>
-        
-        <!-- Tabel untuk input tanggal lahir -->
-        <h2>Cek Umur di Tahun Tertentu</h2>
-        <table>
-            <tr>
-                <td><label for="date">Tanggal:</label></td>
-                <td><input type="number" id="date" placeholder="DD" min="1" max="31" oninput="limitDateInput(this)"></td>
-            </tr>
-            <tr>
-                <td><label for="month">Bulan:</label></td>
-                <td>
-                    <select id="month">
-                        <option value="1">Januari</option>
-                        <option value="2">Februari</option>
-                        <option value="3">Maret</option>
-                        <option value="4">April</option>
-                        <option value="5">Mei</option>
-                        <option value="6">Juni</option>
-                        <option value="7">Juli</option>
-                        <option value="8">Agustus</option>
-                        <option value="9">September</option>
-                        <option value="10">Oktober</option>
-                        <option value="11">November</option>
-                        <option value="12">Desember</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="year">Tahun Lahir:</label></td>
-                <td><input type="number" id="year" placeholder="YYYY" min="1900" max="2099" oninput="limitYearInput(this)"></td>
-            </tr>
-        </table>
 
-        <!-- Input untuk tahun target -->
-        <p>Masukkan Tahun yang Ingin Dicek:</p>
-        <input type="number" id="targetYear" placeholder="YYYY" min="1900" max="2099" oninput="limitYearInput(this)">
+<!-- Tabel untuk input tanggal lahir -->
+<h2>Cek Umur di Tahun Tertentu</h2>
+<table>
+    <tr>
+        <td><label for="date">Tanggal:</label></td>
+        <td><input type="number" id="date" placeholder="DD" min="1" max="31" oninput="limitDateInput(this)"></td>
+    </tr>
+    <tr>
+        <td><label for="month">Bulan:</label></td>
+        <td>
+            <select id="month">
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="year">Tahun Lahir:</label></td>
+        <td><input type="number" id="year" placeholder="YYYY" min="1900" max="2099" maxlength="4" oninput="limitYearInput(this)"></td>
+    </tr>
+</table>
 
-        <button onclick="calculateAge()">Cek Umur</button>
+<!-- Input untuk tahun target -->
+<p>Masukkan Tahun yang Ingin Dicek:</p>
+<input type="number" id="targetYear" placeholder="YYYY" min="1900" max="2099" maxlength="4" oninput="limitYearInput(this)">
 
-        <p id="result"></p>
-    </div>
+<button onclick="calculateAge()">Cek Umur</button>
 
-    <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById("menuDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; // Toggle dropdown
+<p id="result"></p>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("menuDropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block"; // Toggle dropdown
+    }
+
+    function limitDateInput(input) {
+        if (input.value < 1) input.value = 1;
+        if (input.value > 31) input.value = 31; // Mengatur batas atas tanggal
+    }
+
+    function limitYearInput(input) {
+        if (input.value.length > 4) input.value = input.value.slice(0, 4); // Membatasi panjang input menjadi 4 angka
+        if (input.value < 1900) input.value = 1900;
+        if (input.value > 2099) input.value = 2099; // Mengatur batas tahun
+    }
+
+    function calculateAge() {
+        const day = parseInt(document.getElementById('date').value);
+        const month = parseInt(document.getElementById('month').value);
+        const year = parseInt(document.getElementById('year').value);
+        const targetYear = parseInt(document.getElementById('targetYear').value);
+
+        if (!day || !month || !year || !targetYear) {
+            document.getElementById('result').innerText = "Tolong isi semua kolom!";
+            return;
         }
 
-        function limitDateInput(input) {
-            if (input.value < 1) input.value = 1;
-            if (input.value > 31) input.value = 31; // Mengatur batas atas tanggal
-        }
+        const birthDate = new Date(year, month - 1, day); // Bulan -1 karena bulan dimulai dari 0
+        const age = targetYear - year;
 
-        function limitYearInput(input) {
-            if (input.value < 1900) input.value = 1900;
-            if (input.value > 2099) input.value = 2099; // Mengatur batas tahun
-        }
-
-        function calculateAge() {
-            const day = parseInt(document.getElementById('date').value);
-            const month = parseInt(document.getElementById('month').value);
-            const year = parseInt(document.getElementById('year').value);
-            const targetYear = parseInt(document.getElementById('targetYear').value);
-
-            if (!day || !month || !year || !targetYear) {
-                document.getElementById('result').innerText = "Tolong isi semua kolom!";
-                return;
-            }
-
-            const birthDate = new Date(year, month - 1, day); // Bulan -1 karena bulan dimulai dari 0
-            const age = targetYear - year;
-
-            document.getElementById('result').innerText = `Umurmu di tahun ${targetYear} adalah ${age} tahun.`;
-        }
-    </script>
-</body>
-</html>
+        document.getElementById('result').innerText = `Umurmu di tahun ${targetYear} adalah ${age} tahun.`;
+    }
+</script>
