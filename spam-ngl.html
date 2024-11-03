@@ -34,10 +34,17 @@
 
         /* Styling garis horizontal */
         .line {
+            display: flex; /* Menggunakan flexbox untuk membuat 3 bagian */
+            justify-content: space-between; /* Spasi antara garis */
             width: 100%;
+            margin: 10px 0;
+        }
+
+        .line div {
             height: 3px;
             background-color: #FFD700;
-            margin: 10px 0;
+            flex: 1; /* Garis akan memiliki lebar yang sama */
+            margin: 0 5px; /* Jarak antara garis */
         }
 
         /* Styling judul */
@@ -87,7 +94,11 @@
             <button onclick="location.href='cek-umur.html'">Cek Umur</button>
             <button onclick="location.href='uji-kecocokan.html'">Uji Kecocokan</button>
         </div>
-        <div class="line"></div> <!-- Garis horizontal -->
+        <div class="line"> <!-- Garis horizontal -->
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
         <div class="title">Spam NGL</div>
         <input type="text" id="username" placeholder="Masukkan username" />
         <input type="text" id="message" placeholder="Masukkan pesan" />
