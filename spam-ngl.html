@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xyzen Spam NGL</title>
+    <title>Xyzen - Spam NGL</title>
 
+    <link rel="stylesheet" href="styles.css"> <!-- Jika Anda punya file CSS terpisah -->
     <style>
-        /* Styling background full layar */
+        /* Styling untuk body */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -15,64 +16,31 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            background-image: url('xyzen.jpg'); /* Background gambar */
+            background-image: url('xyzen.jpg'); /* Ganti dengan nama file gambar */
             background-size: cover;
             background-position: center;
             color: #fff;
         }
 
-        /* Styling untuk menu titik tiga */
-        .dropdown {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        .dropdown .dropbtn {
-            font-size: 24px;
-            color: #fff;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: #FFD700;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #333;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Styling kontainer utama */
+        /* Kontainer utama */
         .container {
             padding: 20px;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.7); /* Transparan untuk background */
+            background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            width: 90%;
-            max-width: 400px; /* Batas lebar kontainer agar tabel presisi */
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            width: 400px;
+            position: relative; /* Menambahkan posisi relatif untuk garis */
         }
 
-        /* Styling judul utama */
+        /* Styling garis horizontal */
+        .line {
+            width: 100%;
+            height: 3px;
+            background-color: #FFD700;
+            margin: 10px 0;
+        }
+
+        /* Styling judul */
         .title {
             font-size: 28px;
             font-weight: bold;
@@ -80,74 +48,53 @@
             color: #FFD700;
         }
 
-        /* Styling input dan tombol */
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
+        /* Styling tombol */
         button {
             background-color: #FFD700;
             color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 95%;
         }
 
         button:hover {
             background-color: #FFA500;
         }
+
+        /* Menu */
+        .menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .menu button {
+            background-color: rgba(255, 215, 0, 0.7);
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
-    <!-- Dropdown menu titik tiga di atas kiri -->
-    <div class="dropdown">
-        <button class="dropbtn">⋮</button>
-        <div class="dropdown-content">
-            <a href="/cek-umur.html">Cek Umur</a>
-            <a href="/uji-kecocokan.html">Uji Kecocokan</a>
-            <a href="/spam-ngl.html">Spam NGL</a>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="title">Xyzen Spam NGL</div>
-        
-        <input type="text" id="username" placeholder="Masukkan Username" />
-        <input type="text" id="message" placeholder="Masukkan Pesan" />
-        
-        <button onclick="startSpam()">Mulai Spam</button>
-        <button onclick="stopSpam()">Hentikan Spam</button>
-
-        <!-- Menampilkan status animasi -->
-        <div id="status" style="margin-top: 20px; color: #FFD700;"></div>
+        <div class="menu">
+            <button onclick="location.href='index.html'">Home</button>
+            <button onclick="location.href='cek-umur.html'">Cek Umur</button>
+            <button onclick="location.href='uji-kecocokan.html'">Uji Kecocokan</button>
+        </div>
+        <div class="line"></div> <!-- Garis horizontal -->
+        <div class="title">Spam NGL</div>
+        <input type="text" id="username" placeholder="Masukkan username" />
+        <input type="text" id="message" placeholder="Masukkan pesan" />
+        <button id="startSpam">Mulai Spam</button>
+        <button id="stopSpam">Hentikan Spam</button>
     </div>
 
-    <script src="spam-ngl.js"></script>
-    <script>
-        let spamInterval;
-
-        // Fungsi untuk mulai spam dengan animasi
-        function startSpam() {
-            const username = document.getElementById("username").value;
-            const message = document.getElementById("message").value;
-            document.getElementById("status").textContent = "Memulai spam...";
-
-            spamInterval = setInterval(() => {
-                document.getElementById("status").textContent += ".";
-            }, 500);
-
-            sendMessage(username, message);
-        }
-
-        // Fungsi untuk menghentikan spam dan animasi
-        function stopSpam() {
-            clearInterval(spamInterval);
-            stopSpamFunction(); // Fungsi untuk menghentikan proses spam di spam-ngl.js
-            document.getElementById("status").textContent = "Spam dihentikan.";
-        }
-    </script>
+    <script src="spam-ngl.js"></script> <!-- Link ke file JavaScript -->
 </body>
 </html>
