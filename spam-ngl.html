@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xyzen Spam NGL</title>
+    <style>
+        /* Gaya latar belakang dan tata letak umum */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: url('xyzen.jpg'); /* Sesuaikan dengan nama file gambar */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        /* Gaya untuk kontainer utama */
+        .container {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            text-align: center;
+            width: 350px; /* Lebar kontainer yang lebih kecil untuk simetri */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Efek bayangan */
+        }
+
+        /* Gaya judul */
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        /* Gaya untuk input dan tombol */
+        input[type="text"] {
+            width: calc(100% - 20px); /* Simetriskan lebar input */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #FFD700;
+            color: #333;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #FFA500;
+        }
+
+        /* Gaya untuk teks status */
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Xyzen Spam NGL</div>
+        
+        <input type="text" id="username" placeholder="Masukkan Username" required>
+        <input type="text" id="message" placeholder="Masukkan Pesan" required>
+        
+        <button onclick="startSpamming()">Mulai Spam</button>
+        <p id="status"></p>
+    </div>
+
+    <script src="spam-ngl.js"></script>
+</body>
+</html>
