@@ -85,6 +85,7 @@
             gap: 10px;
             margin-top: 10px;
             align-items: center;
+            justify-content: center; /* Menyusun tombol secara simetris */
         }
 
         input[type="text"] {
@@ -107,16 +108,46 @@
         button:hover {
             background-color: #FFA500;
         }
+
+        /* Styling menu pilihan */
+        .menu-options {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+        .menu-options a {
+            display: block;
+            color: #FFD700;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        .menu-options a:hover {
+            background-color: #333;
+        }
     </style>
 </head>
 <body>
     <!-- Menu Hamburger -->
-    <div class="menu">
+    <div class="menu" onclick="toggleMenu()">
         <div></div>
         <div></div>
         <div></div>
     </div>
-    <div class="menu-text">Home</div>
+
+    <!-- Menu Pilihan -->
+    <div class="menu-options" id="menuOptions">
+        <a href="https://cek-umur.xyzenoffc.site/" target="_blank">Home</a>
+    </div>
 
     <div class="chat-container">
         <h2>Chat Anonim</h2>
@@ -147,6 +178,12 @@
             loadMessages();
         };
 
+        // Fungsi untuk menunjukkan atau menyembunyikan menu
+        function toggleMenu() {
+            const menuOptions = document.getElementById("menuOptions");
+            menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+        }
+
         // Fungsi untuk menetapkan nama pengguna atau "Anonim" jika kosong
         function setUserName() {
             const nameInput = document.getElementById("nameInput").value.trim();
@@ -168,7 +205,7 @@
 
                 // Ambil waktu saat ini
                 const currentTime = new Date();
-                const timeString = `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`;
+                const timeString = formatTime(currentTime);
 
                 // Buat elemen pesan dengan waktu
                 const messageElement = document.createElement("div");
@@ -212,6 +249,14 @@
 
             // Scroll ke pesan terakhir
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Format waktu (jam:menit:detik)
+        function formatTime(date) {
+            const hours = date.getHours().toString().padStart(2, "0");
+            const minutes = date.getMinutes().toString().padStart(2, "0");
+            const seconds = date.getSeconds().toString().padStart(2, "0");
+            return `${hours}:${minutes}:${seconds}`;
         }
     </script>
 </body>
