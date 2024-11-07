@@ -38,14 +38,6 @@
             margin: 4px 0;
         }
 
-        .menu-text {
-            position: absolute;
-            top: 50px;
-            left: 20px;
-            font-size: 18px;
-            color: #FFD700;
-        }
-
         /* Styling untuk kontainer utama */
         .chat-container {
             width: 100%;
@@ -172,6 +164,14 @@
 
     <script>
         let userName = "Anonim"; // Default nama pengguna
+        // Daftar kata-kata kasar dan negatif yang lebih lengkap
+        const toxicWords = [
+            "njir", "bodoh", "anjing", "sialan", "kontol", "goblok", "bajingan", 
+            "memek", "kampungan", "babi", "monyet", "cacat", "pelacur", 
+            "taik", "haram", "setan", "bangsat", "ngentot", "kntl", "gobloks",
+            "bego", "kampret", "bego", "dungu", "tolol", "brengsek", "pecundang", 
+            "luar", "cupu", "mampus", "tempe", "ngentotin", "lontong", "kepala babi"
+        ];
 
         // Muat pesan dari localStorage saat halaman dimuat
         window.onload = function() {
@@ -201,6 +201,12 @@
             const messageText = messageInput.value.trim();
 
             if (messageText) {
+                // Cek apakah pesan mengandung kata-kata terlarang
+                if (checkToxicWords(messageText)) {
+                    alert("Pesan Anda mengandung kata-kata terlarang dan tidak dapat dikirim.");
+                    return;
+                }
+
                 const messagesContainer = document.getElementById("messages");
 
                 // Ambil waktu saat ini
@@ -228,6 +234,11 @@
             }
         }
 
+        // Fungsi untuk memeriksa kata-kata terlarang dalam pesan
+        function checkToxicWords(message) {
+            return toxicWords.some(word => message.toLowerCase().includes(word.toLowerCase()));
+        }
+
         // Fungsi untuk menyimpan pesan ke localStorage
         function saveMessage(message) {
             let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
@@ -251,12 +262,11 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Format waktu (jam:menit:detik)
+        // Format waktu (jam:menit)
         function formatTime(date) {
-            const hours = date.getHours().toString().padStart(2, "0");
-            const minutes = date.getMinutes().toString().padStart(2, "0");
-            const seconds = date.getSeconds().toString().padStart(2, "0");
-            return `${hours}:${minutes}:${seconds}`;
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            return `${hours}:${minutes}`;
         }
     </script>
 </body>
