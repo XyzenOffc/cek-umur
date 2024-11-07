@@ -20,6 +20,32 @@
             color: #fff;
         }
 
+        /* Styling menu hamburger di kiri atas */
+        .menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .menu div {
+            width: 25px;
+            height: 3px;
+            background-color: #FFD700;
+            margin: 4px 0;
+        }
+
+        .menu-text {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            font-size: 18px;
+            color: #FFD700;
+        }
+
         /* Styling untuk kontainer utama */
         .chat-container {
             width: 100%;
@@ -84,6 +110,14 @@
     </style>
 </head>
 <body>
+    <!-- Menu Hamburger -->
+    <div class="menu">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="menu-text">Home</div>
+
     <div class="chat-container">
         <h2>Chat Anonim</h2>
 
@@ -132,16 +166,20 @@
             if (messageText) {
                 const messagesContainer = document.getElementById("messages");
 
-                // Buat elemen pesan
+                // Ambil waktu saat ini
+                const currentTime = new Date();
+                const timeString = `${currentTime.getHours()}:${currentTime.getMinutes()}:${currentTime.getSeconds()}`;
+
+                // Buat elemen pesan dengan waktu
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message", "user");
-                messageElement.innerHTML = `<strong>${userName}:</strong> ${messageText}`;
+                messageElement.innerHTML = `<strong>${userName}:</strong> ${messageText} <span style="font-size: 12px; color: #ccc;">[${timeString}]</span>`;
 
                 // Tambahkan pesan ke container pesan
                 messagesContainer.appendChild(messageElement);
 
                 // Simpan pesan ke localStorage
-                saveMessage({ user: userName, text: messageText });
+                saveMessage({ user: userName, text: messageText, time: timeString });
 
                 // Kosongkan input pesan
                 messageInput.value = "";
@@ -168,7 +206,7 @@
             messages.forEach(message => {
                 const messageElement = document.createElement("div");
                 messageElement.classList.add("message", "user");
-                messageElement.innerHTML = `<strong>${message.user}:</strong> ${message.text}`;
+                messageElement.innerHTML = `<strong>${message.user}:</strong> ${message.text} <span style="font-size: 12px; color: #ccc;">[${message.time}]</span>`;
                 messagesContainer.appendChild(messageElement);
             });
 
