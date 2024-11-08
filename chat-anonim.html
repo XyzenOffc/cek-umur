@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Anonim - Xyzen</title>
     <style>
-        /* Styling dasar untuk halaman */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -20,7 +19,6 @@
             color: #fff;
         }
 
-        /* Styling menu hamburger di kiri atas */
         .menu {
             position: absolute;
             top: 20px;
@@ -38,7 +36,27 @@
             margin: 4px 0;
         }
 
-        /* Styling untuk kontainer utama */
+        .menu-options {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+        .menu-options a {
+            display: block;
+            color: #FFD700;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
         .chat-container {
             width: 100%;
             max-width: 500px;
@@ -46,7 +64,6 @@
             margin-top: 20px;
         }
 
-        /* Styling area pesan */
         .messages {
             max-height: 400px;
             overflow-y: auto;
@@ -57,7 +74,6 @@
             color: #333;
         }
 
-        /* Styling pesan */
         .message {
             padding: 10px;
             margin: 5px 0;
@@ -71,13 +87,12 @@
             align-self: flex-end;
         }
 
-        /* Styling input dan tombol */
         .input-container {
             display: flex;
             gap: 10px;
             margin-top: 10px;
             align-items: center;
-            justify-content: center; /* Menyusun tombol secara simetris */
+            justify-content: center;
         }
 
         input[type="text"] {
@@ -101,42 +116,18 @@
             background-color: #FFA500;
         }
 
-        /* Styling menu pilihan */
-        .menu-options {
-            display: none;
-            background-color: rgba(0, 0, 0, 0.7);
-            position: absolute;
-            top: 60px;
-            left: 20px;
-            width: 200px;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-            z-index: 2;
-        }
-
-        .menu-options a {
-            display: block;
-            color: #FFD700;
-            text-decoration: none;
-            padding: 10px;
-            margin: 5px 0;
-        }
-
         .menu-options a:hover {
             background-color: #333;
         }
     </style>
 </head>
 <body>
-    <!-- Menu Hamburger -->
     <div class="menu" onclick="toggleMenu()">
         <div></div>
         <div></div>
         <div></div>
     </div>
 
-    <!-- Menu Pilihan -->
     <div class="menu-options" id="menuOptions">
         <a href="https://cek-umur.xyzenoffc.site/" target="_blank">Home</a>
     </div>
@@ -144,125 +135,104 @@
     <div class="chat-container">
         <h2>Chat Anonim</h2>
 
-        <!-- Input nama pengguna -->
         <div class="input-container">
             <input type="text" id="nameInput" placeholder="Masukkan nama Anda (opsional)">
             <button onclick="setUserName()">Mulai Chat</button>
         </div>
 
-        <!-- Input pesan hanya ditampilkan setelah nama di-set -->
         <div class="input-container" id="chatInputContainer" style="display: none;">
             <input type="text" id="messageInput" placeholder="Ketik pesan...">
             <button onclick="sendMessage()">Kirim</button>
         </div>
 
-        <!-- Area untuk pesan yang ditampilkan -->
         <div class="messages" id="messages">
-            <!-- Pesan akan ditambahkan di sini -->
         </div>
     </div>
 
     <script>
-        let userName = "Anonim"; // Default nama pengguna
-        // Daftar kata-kata kasar dan negatif yang lebih lengkap
+        let userName = "Anonim";
         const toxicWords = [
-            "njir", "bodoh", "anjing", "sialan", "kontol", "goblok", "bajingan", 
+            "bodoh", "anjing", "sialan", "kontol", "goblok", "bajingan", 
             "memek", "kampungan", "babi", "monyet", "cacat", "pelacur", 
             "taik", "haram", "setan", "bangsat", "ngentot", "kntl", "gobloks",
-            "bego", "kampret", "bego", "dungu", "tolol", "brengsek", "pecundang", 
-            "luar", "cupu", "mampus", "tempe", "ngentotin", "lontong", "kepala babi"
+            "bego", "kampret", "dungu", "tolol", "brengsek", "pecundang", 
+            "mampus", "ngentotin"
         ];
 
-        // Muat pesan dari localStorage saat halaman dimuat
         window.onload = function() {
             loadMessages();
+            clearOldMessages();
         };
 
-        // Fungsi untuk menunjukkan atau menyembunyikan menu
         function toggleMenu() {
             const menuOptions = document.getElementById("menuOptions");
             menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
         }
 
-        // Fungsi untuk menetapkan nama pengguna atau "Anonim" jika kosong
         function setUserName() {
             const nameInput = document.getElementById("nameInput").value.trim();
-            userName = nameInput || "Anonim"; // Jika kosong, default ke "Anonim"
-
-            // Menyembunyikan input nama dan menampilkan input pesan
+            userName = nameInput || "Anonim";
             document.getElementById("nameInput").disabled = true;
             document.querySelector('button[onclick="setUserName()"]').disabled = true;
             document.getElementById("chatInputContainer").style.display = "flex";
         }
 
-        // Fungsi untuk mengirim pesan
         function sendMessage() {
             const messageInput = document.getElementById("messageInput");
             const messageText = messageInput.value.trim();
 
             if (messageText) {
-                // Cek apakah pesan mengandung kata-kata terlarang
                 if (checkToxicWords(messageText)) {
                     alert("Pesan Anda mengandung kata-kata terlarang dan tidak dapat dikirim.");
                     return;
                 }
 
-                const messagesContainer = document.getElementById("messages");
-
-                // Ambil waktu saat ini
                 const currentTime = new Date();
                 const timeString = formatTime(currentTime);
 
-                // Buat elemen pesan dengan waktu
-                const messageElement = document.createElement("div");
-                messageElement.classList.add("message", "user");
-                messageElement.innerHTML = `<strong>${userName}:</strong> ${messageText} <span style="font-size: 12px; color: #ccc;">[${timeString}]</span>`;
+                const message = { user: userName, text: messageText, time: timeString, timestamp: currentTime.getTime() };
+                saveMessage(message);
 
-                // Tambahkan pesan ke container pesan
-                messagesContainer.appendChild(messageElement);
-
-                // Simpan pesan ke localStorage
-                saveMessage({ user: userName, text: messageText, time: timeString });
-
-                // Kosongkan input pesan
+                displayMessage(message);
                 messageInput.value = "";
-
-                // Scroll ke pesan terakhir
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
             } else {
                 alert("Pesan tidak boleh kosong.");
             }
         }
 
-        // Fungsi untuk memeriksa kata-kata terlarang dalam pesan
         function checkToxicWords(message) {
             return toxicWords.some(word => message.toLowerCase().includes(word.toLowerCase()));
         }
 
-        // Fungsi untuk menyimpan pesan ke localStorage
         function saveMessage(message) {
             let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
             messages.push(message);
             localStorage.setItem("chatMessages", JSON.stringify(messages));
         }
 
-        // Fungsi untuk memuat pesan dari localStorage
         function loadMessages() {
             const messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
-            const messagesContainer = document.getElementById("messages");
-
-            messages.forEach(message => {
-                const messageElement = document.createElement("div");
-                messageElement.classList.add("message", "user");
-                messageElement.innerHTML = `<strong>${message.user}:</strong> ${message.text} <span style="font-size: 12px; color: #ccc;">[${message.time}]</span>`;
-                messagesContainer.appendChild(messageElement);
-            });
-
-            // Scroll ke pesan terakhir
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messages.forEach(displayMessage);
         }
 
-        // Format waktu (jam:menit)
+        function displayMessage(message) {
+            const messagesContainer = document.getElementById("messages");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", "user");
+            messageElement.innerHTML = `<strong>${message.user}:</strong> ${message.text} <span style="font-size: 12px; color: #ccc;">[${message.time}]</span>`;
+            messagesContainer.appendChild(messageElement);
+        }
+
+        function clearOldMessages() {
+            let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+            const currentTime = new Date().getTime();
+            messages = messages.filter(message => currentTime - message.timestamp < 24 * 60 * 60 * 1000);
+            localStorage.setItem("chatMessages", JSON.stringify(messages));
+            document.getElementById("messages").innerHTML = "";
+            messages.forEach(displayMessage);
+        }
+
         function formatTime(date) {
             const hours = String(date.getHours()).padStart(2, "0");
             const minutes = String(date.getMinutes()).padStart(2, "0");
