@@ -113,7 +113,7 @@
             color: #ff6347;
         }
 
-        /* Efek teks bergerak */
+        /* Efek teks bergerak dari kiri */
         .marquee {
             width: 100%;
             overflow: hidden;
@@ -129,8 +129,8 @@
         }
 
         @keyframes moveText {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(-100%); } /* Mulai dari kiri */
+            100% { transform: translateX(100%); } /* Berhenti di kanan */
         }
     </style>
 </head>
