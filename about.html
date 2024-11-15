@@ -112,6 +112,26 @@
         .contact p a:hover {
             color: #ff6347;
         }
+
+        /* Efek teks bergerak */
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 20px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .marquee p {
+            display: inline-block;
+            animation: moveText 10s linear infinite;
+        }
+
+        @keyframes moveText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
     </style>
 </head>
 <body>
@@ -124,6 +144,11 @@
     <!-- Foto Profil -->
     <div class="profile">
         <img src="pp.jpg" alt="Foto Profil Xyzen">
+    </div>
+
+    <!-- Teks Marquee -->
+    <div class="marquee">
+        <p>King Xyzen Back</p>
     </div>
 
     <!-- Deskripsi Diri -->
