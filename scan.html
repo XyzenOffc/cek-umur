@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>QR Code Scanner</title>
   <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
   <style>
@@ -11,9 +11,9 @@
       padding: 0;
       font-family: Arial, sans-serif;
       text-align: center;
+      overflow: hidden; /* Mengunci scroll */
       background: url('xyzen.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
     }
 
     .container {
@@ -28,6 +28,7 @@
     h1 {
       margin: 0;
       padding: 10px;
+      color: #fff;
     }
 
     #reader {
@@ -37,11 +38,13 @@
       border: 2px solid #fff;
       background: #000;
       border-radius: 10px;
+      overflow: hidden; /* Mengunci elemen kamera */
     }
 
     #result {
       margin-top: 20px;
       font-size: 18px;
+      color: #fff;
     }
   </style>
 </head>
@@ -53,27 +56,33 @@
   </div>
 
   <script>
+    // Callback sukses ketika QR Code berhasil dipindai
     const qrCodeSuccessCallback = (decodedText, decodedResult) => {
       console.log(`Decoded text: ${decodedText}`);
-      // Redirect to the URL
+      // Redirect ke URL yang ditemukan
       window.location.href = decodedText;
     };
 
+    // Callback jika terjadi kesalahan
     const qrCodeErrorCallback = (errorMessage) => {
       console.error(`QR Code Error: ${errorMessage}`);
     };
 
+    // Inisialisasi HTML5 QR Code
     const html5QrCode = new Html5Qrcode("reader");
 
+    // Konfigurasi kamera
     const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
+    // Mulai kamera (gunakan kamera belakang secara default)
     html5QrCode.start(
-      { facingMode: "environment" }, // Use rear camera
+      { facingMode: "environment" }, // Kamera belakang
       config,
       qrCodeSuccessCallback,
       qrCodeErrorCallback
     ).catch(err => {
-      console.error(`Unable to start scanning: ${err}`);
+      console.error(`Tidak bisa memulai kamera: ${err}`);
+      alert("Tidak dapat mengakses kamera. Pastikan izin kamera sudah diberikan.");
     });
   </script>
 </body>
