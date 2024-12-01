@@ -11,7 +11,7 @@
       padding: 0;
       font-family: Arial, sans-serif;
       text-align: center;
-      overflow: hidden; /* Mengunci scroll */
+      overflow: hidden;
       background: url('xyzen.jpg') no-repeat center center fixed;
       background-size: cover;
     }
@@ -38,13 +38,19 @@
       border: 2px solid #fff;
       background: #000;
       border-radius: 10px;
-      overflow: hidden; /* Mengunci elemen kamera */
+      overflow: hidden;
     }
 
     #result {
       margin-top: 20px;
       font-size: 18px;
       color: #fff;
+    }
+
+    .notification {
+      margin-top: 20px;
+      font-size: 16px;
+      color: yellow;
     }
   </style>
 </head>
@@ -53,37 +59,54 @@
     <h1>QR Code Scanner</h1>
     <div id="reader"></div>
     <p id="result">Arahkan kamera ke QR Code untuk memindai.</p>
+    <p class="notification" id="notification">Memeriksa izin kamera...</p>
   </div>
 
   <script>
-    // Callback sukses ketika QR Code berhasil dipindai
-    const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-      console.log(`Decoded text: ${decodedText}`);
-      // Redirect ke URL yang ditemukan
-      window.location.href = decodedText;
+    const notificationElement = document.getElementById("notification");
+
+    // Fungsi untuk memulai QR Code Scanner
+    const startScanner = () => {
+      const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+        console.log(`Decoded text: ${decodedText}`);
+        // Redirect ke URL yang ditemukan
+        window.location.href = decodedText;
+      };
+
+      const qrCodeErrorCallback = (errorMessage) => {
+        console.error(`QR Code Error: ${errorMessage}`);
+      };
+
+      const html5QrCode = new Html5Qrcode("reader");
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+      // Mulai kamera (gunakan kamera belakang secara default)
+      html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        qrCodeSuccessCallback,
+        qrCodeErrorCallback
+      ).catch(err => {
+        console.error(`Tidak bisa memulai kamera: ${err}`);
+        notificationElement.textContent = "Tidak dapat mengakses kamera. Periksa izin kamera Anda.";
+        notificationElement.style.color = "red";
+      });
     };
 
-    // Callback jika terjadi kesalahan
-    const qrCodeErrorCallback = (errorMessage) => {
-      console.error(`QR Code Error: ${errorMessage}`);
-    };
-
-    // Inisialisasi HTML5 QR Code
-    const html5QrCode = new Html5Qrcode("reader");
-
-    // Konfigurasi kamera
-    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-    // Mulai kamera (gunakan kamera belakang secara default)
-    html5QrCode.start(
-      { facingMode: "environment" }, // Kamera belakang
-      config,
-      qrCodeSuccessCallback,
-      qrCodeErrorCallback
-    ).catch(err => {
-      console.error(`Tidak bisa memulai kamera: ${err}`);
-      alert("Tidak dapat mengakses kamera. Pastikan izin kamera sudah diberikan.");
-    });
+    // Periksa akses kamera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        // Jika izin diberikan
+        notificationElement.textContent = "Kamera siap. Silakan arahkan ke QR Code.";
+        notificationElement.style.color = "green";
+        startScanner();
+      })
+      .catch((err) => {
+        // Jika izin ditolak
+        console.error(`Izin kamera ditolak: ${err}`);
+        notificationElement.textContent = "Izin kamera diperlukan untuk memindai QR Code. Harap aktifkan izin kamera.";
+        notificationElement.style.color = "red";
+      });
   </script>
 </body>
 </html>
