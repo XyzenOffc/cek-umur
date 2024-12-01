@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: url('xyzen.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    .container {
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      margin: 50px auto;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      padding: 10px;
+    }
+
+    #reader {
+      margin: 20px auto;
+      width: 300px;
+      height: 300px;
+      border: 2px solid #fff;
+      background: #000;
+      border-radius: 10px;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>QR Code Scanner</h1>
+    <div id="reader"></div>
+    <p id="result">Arahkan kamera ke QR Code untuk memindai.</p>
+  </div>
+
+  <script>
+    const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+      console.log(`Decoded text: ${decodedText}`);
+      // Redirect to the URL
+      window.location.href = decodedText;
+    };
+
+    const qrCodeErrorCallback = (errorMessage) => {
+      console.error(`QR Code Error: ${errorMessage}`);
+    };
+
+    const html5QrCode = new Html5Qrcode("reader");
+
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    html5QrCode.start(
+      { facingMode: "environment" }, // Use rear camera
+      config,
+      qrCodeSuccessCallback,
+      qrCodeErrorCallback
+    ).catch(err => {
+      console.error(`Unable to start scanning: ${err}`);
+    });
+  </script>
+</body>
+</html>
