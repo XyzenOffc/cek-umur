@@ -80,9 +80,9 @@
       const html5QrCode = new Html5Qrcode("reader");
       const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-      // Mulai kamera (gunakan kamera belakang secara default)
+      // Mulai kamera (gunakan kamera belakang)
       html5QrCode.start(
-        { facingMode: "environment" },
+        { facingMode: "environment" }, // Kamera belakang
         config,
         qrCodeSuccessCallback,
         qrCodeErrorCallback
@@ -94,10 +94,10 @@
     };
 
     // Periksa akses kamera
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
       .then((stream) => {
         // Jika izin diberikan
-        notificationElement.textContent = "Kamera siap. Silakan arahkan ke QR Code.";
+        notificationElement.textContent = "Kamera belakang siap. Silakan arahkan ke QR Code.";
         notificationElement.style.color = "green";
         startScanner();
       })
