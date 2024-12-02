@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Mencegah zoom -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>About Me - Xyzen</title>
     <style>
         body {
@@ -13,21 +13,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Mencegah scroll */
-        }
-
-        /* Efek teks kelap-kelip warna-warni */
-        * {
-            animation: colorChange 1.5s infinite alternate;
-        }
-
-        @keyframes colorChange {
-            0% { color: #ff6347; }
-            20% { color: #ff4500; }
-            40% { color: #32cd32; }
-            60% { color: #1e90ff; }
-            80% { color: #ff1493; }
-            100% { color: #ff6347; }
+            overflow-x: hidden; /* Mencegah scroll horizontal */
         }
 
         header {
@@ -114,7 +100,6 @@
             color: #ff6347;
         }
 
-        /* Efek teks bergerak dari kiri */
         .marquee {
             width: 100%;
             overflow: hidden;
@@ -130,8 +115,8 @@
         }
 
         @keyframes moveText {
-            0% { transform: translateX(-100%); } /* Mulai dari kiri */
-            100% { transform: translateX(100%); } /* Berhenti di kanan */
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
     </style>
 </head>
