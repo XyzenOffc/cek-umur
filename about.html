@@ -187,10 +187,26 @@
 </div>
 
 <!-- Audio -->
-<audio autoplay loop>
-    <source src="oy.mp3" type="audio/mpeg">
-    Browser Anda tidak mendukung elemen audio.
-</audio>
+<audio id="audioPlayer"></audio>
+
+<script>
+    const audioPlayer = document.getElementById('audioPlayer');
+    const songs = ['oy.mp3', 'oi.mp3'];
+    let currentSongIndex = 0;
+
+    function playSong() {
+        audioPlayer.src = songs[currentSongIndex];
+        audioPlayer.play();
+    }
+
+    audioPlayer.addEventListener('ended', () => {
+        currentSongIndex = (currentSongIndex + 1) % songs.length; // Pindah ke lagu berikutnya
+        playSong();
+    });
+
+    // Mulai memutar lagu pertama
+    playSong();
+</script>
 
 </body>
 </html>
