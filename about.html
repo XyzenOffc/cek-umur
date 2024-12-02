@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"> <!-- Mencegah zoom -->
     <title>About Me - Xyzen</title>
     <style>
         body {
@@ -13,6 +13,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Mencegah scroll */
         }
 
         /* Efek teks kelap-kelip warna-warni */
@@ -185,6 +186,12 @@
         <p>Telepon: <a href="tel:+628983807869">08983807869</a></p>
     </div>
 </div>
+
+<!-- Audio -->
+<audio autoplay loop>
+    <source src="oy.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung elemen audio.
+</audio>
 
 </body>
 </html>
